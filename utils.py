@@ -22,7 +22,7 @@ def get_infected(region, fname):
     while True:
         line = f.readline()
         if line != '':
-            r,cn,ct,cr,fecha = line.split(';')
+            r,cn,ct,cr,cf,fecha = line.split(';')
             if r.lower() in region.lower():
                 return np.double(ct)
         else:
