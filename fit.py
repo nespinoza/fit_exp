@@ -11,7 +11,7 @@ import utils
 
 # Define where we will be saving the Github 
 # repo + downloading the data when updated
-homefolder = '/Users/nespinoza/github/'
+homefolder = '/Users/nespinoza/Documents/'
 # Define current working directory:
 cwd = os.getcwd()
 # Go to homefolder and...
@@ -62,7 +62,7 @@ dists = ['fixed', 'fixed', 'fixed', 'fixed', 'fixed',
          'normal', 'loguniform', 'loguniform', 'loguniform', 'uniform','fixed']
 
 hyperps = [0., 1., 0., 0., 90.,
-          [-100.,100.], [0.001,100.], [0.001,100.], [0.001,100.], [-1e3,1e3],0.]
+          [-100.,100.], [1e-5,100.], [1e-5,100.], [1e-5,100.], [-1e3,1e3],0.]
 
 # Gather the priors in a dictionary:
 priors = juliet.utils.generate_priors(params,dists,hyperps)
@@ -73,7 +73,7 @@ dataset = juliet.load(priors = priors, t_rv = t, y_rv = data, yerr_rv = errors,
 
 # Fit (ta defines a zero-point for the times --- in our case is 0, but for exoplanet data typically is a random 
 # julian date):
-results = dataset.fit(n_live_points = 500, ta=0.)
+results = dataset.fit(n_live_points = 1000, ta=0.)
 
 # Now that fit has run, generate a set of model_times, and extrapolate a bit the model:
 model_times = np.linspace(np.min(days),np.max(days)+4.,1000)
