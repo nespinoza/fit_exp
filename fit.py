@@ -18,8 +18,12 @@ cwd = os.getcwd()
 os.chdir(homefolder)
 # If repo not already here, clone it:
 if not os.path.exists(homefolder+'coronavirus'):
+    print('Cloning repo:')
     os.system('git clone https://github.com/itoledor/coronavirus')
 else:
+    print('Pulling from repo...')
+    os.chdir(homefolder+'coronavirus')
+    print(os.getcwd())
     # If repo is present, update it in case more data was uploaded:
     os.system('git pull')
 # Come back to CWD:
@@ -91,11 +95,13 @@ plt.xlabel('Days since March 2nd')
 plt.ylabel('Number of infected persons')
 
 # Evaluate extrapolation in 1 and 2 days in the future:
-model, m_up, m_down = results.rv.evaluate('chile',t = np.max(days) + np.array([1.,2.]), GPregressors = np.max(days) + np.array([1.,2.]), return_err = True)
+model, m_up, m_down = results.rv.evaluate('chile',t = np.max(days) + np.array([1.,2.,30.]), GPregressors = np.max(days) + np.array([1.,2.,30.]), return_err = True)
 model, m_up, m_down = np.exp(model), np.exp(m_up), np.exp(m_down)
 plt.title('Prediction for tomorrow: {} +- {}, day after: {} +- {}'.format(int(model[0]),int((m_up[0]-model[0]+model[0]-m_down[0])/2.),
                                                                           int(model[1]),int((m_up[1]-model[0]+model[0]-m_down[1])/2.)))
 plt.xlim(np.min(days),np.max(days)+3.)
-plt.ylim(-10, np.max(m_up))
+plt.ylim(-10, 1000.)
+print('Month-from-now perdiction: {} + {} - {}'.format(int(model[-1]),int(m_up[-1]),int(m_down[-1)))
+
 # Save plot:
 plt.savefig('covid-ch.png')
